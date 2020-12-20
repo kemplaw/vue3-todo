@@ -14,3 +14,8 @@ export enum TodoStatus {
   unCompleted = 0,
   completed = 1
 }
+
+export interface Tab {
+  label: string
+  id: TabStatus
+}

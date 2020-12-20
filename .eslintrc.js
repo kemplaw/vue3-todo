@@ -8,6 +8,8 @@ module.exports = {
     ecmaVersion: 2020
   },
   rules: {
+    '@typescript-eslint/member-delimiter-style': 0,
+    'arrow-parens': 0,
     '@typescript-eslint/no-explicit-any': 0,
     'comma-dangle': ['error', 'never'],
     'linebreak-style': ['error', 'windows'],
