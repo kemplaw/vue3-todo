@@ -8,6 +8,9 @@ module.exports = {
     ecmaVersion: 2020
   },
   rules: {
+    'no-plusplus': 0,
+    'arrow-body-style': 0,
+    'object-curly-newline': 0,
     '@typescript-eslint/member-delimiter-style': 0,
     'arrow-parens': 0,
     '@typescript-eslint/no-explicit-any': 0,

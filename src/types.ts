@@ -19,3 +19,9 @@ export interface Tab {
   label: string
   id: TabStatus
 }
+
+export interface Todo {
+  status: TodoStatus
+  content: string
+  id: number
+}

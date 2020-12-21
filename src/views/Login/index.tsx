@@ -1,3 +1,4 @@
+import { useStore } from '@/store'
 import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import './style.styl'
@@ -5,6 +6,7 @@ import './style.styl'
 export default defineComponent({
   name: 'Login',
   setup() {
+    const store = useStore()
     const errorFlagRef = ref(false)
     let { username, password } = reactive<{ [key: string]: any }>({ username: '', password: '' })
     const router = useRouter()
@@ -17,15 +19,14 @@ export default defineComponent({
       password = e.target.value
     }
 
-    function handleLogin() {
-      if (username === '123' && password === '1234') {
+    async function handleLogin() {
+      try {
+        await store.dispatch('userModule/login', { username, password })
         errorFlagRef.value = false
         router.replace('/app')
-
-        return
+      } catch (error) {
+        errorFlagRef.value = true
       }
-
-      errorFlagRef.value = true
     }
 
     return () => (

@@ -1,10 +1,14 @@
 import { TabContextDefine, TabProviderContextKey } from '@/context-type'
-import { Tab } from '@/types'
+import { TabStatus } from '@/types'
 import { defineComponent, PropType, provide } from 'vue'
 
 export default defineComponent({
   name: 'TabGroup',
   props: {
+    value: {
+      type: Number as PropType<TabStatus>,
+      required: true
+    },
     onChange: {
       type: Function as PropType<(tabIndex: number) => void>,
       required: true
@@ -12,7 +16,6 @@ export default defineComponent({
   },
   setup(props, { slots }) {
     function handleTabChange(tabIndex: number) {
-      console.log(tabIndex)
       props.onChange(tabIndex)
     }
 

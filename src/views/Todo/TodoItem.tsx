@@ -1,15 +1,11 @@
-import { TodoStatus } from '@/types'
+import { Todo, TodoStatus } from '@/types'
 import { computed, defineComponent, PropType } from 'vue'
 
 export default defineComponent({
   name: 'TodoItem',
   props: {
-    status: {
-      type: Number as PropType<TodoStatus>,
-      required: true
-    },
-    content: {
-      type: String as PropType<string>,
+    todo: {
+      type: Object as PropType<Todo>,
       required: true
     },
     onChange: {
@@ -21,16 +17,16 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const checkboxValueRef = computed(() => props.status === TodoStatus.completed)
+    const checkboxValueRef = computed(() => props.todo.status === TodoStatus.completed)
 
     function handleChangeCheckBox(e: any) {
-      props.onChange(e.target.value)
+      props.onChange(e.target.checked)
     }
 
     return () => (
       <div class='todo-item-wrapper'>
         <input checked={checkboxValueRef.value} type='checkbox' onChange={handleChangeCheckBox} />
-        <span class='content'>{props.content}</span>
+        <span class='content'>{props.todo.content}</span>
         <i class='del icon' onClick={props.onDel}>
           x
         </i>

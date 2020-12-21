@@ -1,48 +1,104 @@
 import { TabGroup, TabItem } from '@/components'
-import { TabStatus, TodoStatus } from '@/types'
-import { defineComponent, ref } from 'vue'
+import { useStore } from '@/store'
+import { TabStatus, Todo, TodoStatus } from '@/types'
+import { computed, defineComponent, onMounted, ref } from 'vue'
 import TodoHelper from './TodoHelper'
 import TodoItem from './TodoItem'
+
+let id = 1
 
 export default defineComponent({
   name: 'Todo',
   setup() {
+    const store = useStore()
+    const todoFilterRef = ref(TabStatus.all)
     const tabs = ref([
       { id: TabStatus.all, label: 'all' },
       { id: TabStatus.active, label: 'active' },
       { id: TabStatus.completed, label: 'completed' }
     ])
-    function handleChangeTodoStatus(status: boolean) {
-      console.log(status)
+    const todoListRef = computed<Todo[]>(() => store.state.todoModule.todoList)
+    const userInfoRef = computed(() => store.state.userModule.user.username)
+
+    onMounted(() => {
+      store.dispatch('todoModule/fillTodoList')
+    })
+
+    function handleChangeTodoStatus(status: boolean, todoId: number) {
+      const todoStatus = status ? TodoStatus.completed : TodoStatus.unCompleted
+      const targetTodo = todoListRef.value.find(todo => todo.id === todoId)
+      store.dispatch('todoModule/updateTodo', { ...targetTodo, status: todoStatus })
     }
 
-    function handleDelTodo() {
-      console.log('del todo item')
+    function handleDelTodo(todoId: number) {
+      store.dispatch('todoModule/deleteTodo', todoId)
     }
 
-    function handleChangeTab(tabIndex: number) {
-      console.log(tabIndex)
+    function handleChangeTab(tabIndex: TabStatus) {
+      todoFilterRef.value = tabIndex
     }
+
+    /**
+     * @description: 添加 todo
+     */
+    function handleAddTodo(e: any) {
+      if (e.key.toLowerCase() !== 'enter') return
+
+      const todo: Todo = {
+        id: id++,
+        status: TodoStatus.unCompleted,
+        content: e.target.value
+      }
+      e.target.value = ''
+      store.dispatch('todoModule/addTodo', todo)
+    }
+
+    function handleClearAllCompleted() {
+      store.dispatch('todoModule/deleteAllCompleted')
+    }
+
+    const filteredTodoListRef = computed(() => {
+      return todoListRef.value.filter(todo => {
+        switch (todoFilterRef.value) {
+          case TabStatus.completed:
+            return todo.status === TodoStatus.completed
+          case TabStatus.active:
+            return todo.status === TodoStatus.unCompleted
+          default:
+            return true
+        }
+      })
+    })
 
     return () => (
       <div class='todo-wrapper'>
+        {userInfoRef.value && <h4>{userInfoRef.value}'s todo</h4>}
         <div class='tab-wrapper'>
-          <TabGroup onChange={handleChangeTab}>
+          <TabGroup value={todoFilterRef.value} onChange={handleChangeTab}>
             {tabs.value.map(tab => (
               <TabItem index={tab.id} label={tab.label} />
             ))}
           </TabGroup>
         </div>
-        <div class='todo-list-wrapper'>
-          <TodoItem
-            status={TodoStatus.unCompleted}
-            content='这是一条待办事项'
-            onChange={handleChangeTodoStatus}
-            onDel={handleDelTodo}
-          />
+        <div class='todo-input-wrapper'>
+          <input type='text' onKeyup={handleAddTodo} />
         </div>
-        <div class='helper-wrapper'>
-          <TodoHelper />
+        <div class='todo-list-wrapper'>
+          {filteredTodoListRef.value.map(todo => (
+            <TodoItem
+              key={todo.id}
+              todo={todo}
+              onChange={v => handleChangeTodoStatus(v, todo.id)}
+              onDel={() => handleDelTodo(todo.id)}
+            />
+          ))}
+        </div>
+        <div class='todo-helper-wrapper'>
+          <TodoHelper
+            todoFilter={todoFilterRef.value}
+            todoList={filteredTodoListRef.value}
+            onClearAllCompletedTodo={handleClearAllCompleted}
+          />
         </div>
       </div>
     )
