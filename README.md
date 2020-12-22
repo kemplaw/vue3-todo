@@ -1,5 +1,14 @@
 # vue3-todo
 
+## Todo List
+
+- [x] Template basic
+- [x] Computed property
+- [x] Component basic
+- [x] Router basic
+- [x] Store basic
+- [x] Lifecycle
+
 ## Project setup
 ```
 npm install
