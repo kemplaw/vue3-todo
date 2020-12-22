@@ -29,10 +29,22 @@ export default defineComponent({
       }
     }
 
+    function handlePressEnter(e: any) {
+      if (e.key.toLowerCase() === 'enter') {
+        handleLogin()
+      }
+    }
+
     return () => (
       <div class='login-form-wrapper'>
         <div class='form-group'>
-          <input value={username} type='text' class='form-control' onInput={handleChangeUsername} />
+          <input
+            value={username}
+            type='text'
+            class='form-control'
+            onInput={handleChangeUsername}
+            onKeyup={handlePressEnter}
+          />
           {errorFlagRef.value && <div class='error-text'>账号或密码错误</div>}
         </div>
         <div class='form-group'>
@@ -41,6 +53,7 @@ export default defineComponent({
             type='password'
             class='form-control'
             onInput={handleChangePassword}
+            onKeyup={handlePressEnter}
           />
           {errorFlagRef.value && <div class='error-text'>账号或密码错误</div>}
         </div>

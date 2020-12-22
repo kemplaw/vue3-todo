@@ -1,6 +1,7 @@
 import { Module } from 'vuex'
 import { RootStoreDefine } from '@/store'
 import { MutationTypes, UserInfo, UserModuleStateDefine } from './types'
+import { getTimesAfterDays } from '@/utils'
 
 export default {
   namespaced: true,
@@ -19,6 +20,10 @@ export default {
       return new Promise((resolve, reject) => {
         if (loginFormValue.password === '1234' && loginFormValue.username === 'kemp') {
           commit(MutationTypes.UPDATE_USER, { username: 'kemp' } as UserInfo)
+          sessionStorage.setItem(
+            'userInfo',
+            JSON.stringify({ username: 'kemp', expire: getTimesAfterDays(7) })
+          )
           return resolve(true)
         }
 
