@@ -1,5 +1,5 @@
 import { InjectionKey } from 'vue'
-import { createStore, Store, useStore as baseUseStore } from 'vuex'
+import { createLogger, createStore, Store, useStore as baseUseStore } from 'vuex'
 import { userModule, todoModule } from './modules'
 import { TodoModuleStateDefine } from './modules/todo/types'
 import { UserModuleStateDefine } from './modules/user/types'
@@ -18,7 +18,8 @@ export default createStore({
   modules: {
     userModule,
     todoModule
-  }
+  },
+  plugins: [createLogger()]
 })
 
 export function useStore() {

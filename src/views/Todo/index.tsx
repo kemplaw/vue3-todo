@@ -95,7 +95,6 @@ export default defineComponent({
         </div>
         <div class='todo-helper-wrapper'>
           <TodoHelper
-            todoFilter={todoFilterRef.value}
             todoList={filteredTodoListRef.value}
             onClearAllCompletedTodo={handleClearAllCompleted}
           />

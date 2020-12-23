@@ -4,10 +4,6 @@ import { computed, defineComponent, PropType } from 'vue'
 export default defineComponent({
   name: 'TodoHelper',
   props: {
-    todoFilter: {
-      type: Number as PropType<TabStatus>,
-      required: true
-    },
     onClearAllCompletedTodo: {
       type: Function as PropType<() => void>,
       required: true
