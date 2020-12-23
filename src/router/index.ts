@@ -8,7 +8,7 @@ const router = createRouter({
 })
 
 function accountSessionValid(): boolean {
-  const accountSessionString = sessionStorage.getItem('userInfo')
+  const accountSessionString = localStorage.getItem('userInfo')
 
   if (!accountSessionString) return false
 
