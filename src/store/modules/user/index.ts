@@ -1,7 +1,7 @@
 import { Module } from 'vuex'
 import { RootStoreDefine } from '@/store'
-import { MutationTypes, UserInfo, UserModuleStateDefine } from './types'
 import { getTimesAfterDays } from '@/utils'
+import { MutationTypes, UserInfo, UserModuleStateDefine } from './types'
 
 export default {
   namespaced: true,
