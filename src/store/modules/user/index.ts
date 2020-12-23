@@ -20,7 +20,7 @@ export default {
       return new Promise((resolve, reject) => {
         if (loginFormValue.password === '1234' && loginFormValue.username === 'kemp') {
           commit(MutationTypes.UPDATE_USER, { username: 'kemp' } as UserInfo)
-          sessionStorage.setItem(
+          localStorage.setItem(
             'userInfo',
             JSON.stringify({ username: 'kemp', expire: getTimesAfterDays(7) })
           )

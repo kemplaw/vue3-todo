@@ -1,4 +1,4 @@
-import { defineComponent, onMounted } from 'vue'
+import { defineComponent, onMounted, onRenderTracked, onRenderTriggered } from 'vue'
 import { RouterView } from 'vue-router'
 import { useStore } from './store'
 import { MutationTypes } from './store/modules/user/types'
@@ -16,6 +16,10 @@ export default defineComponent({
 
       store.commit(`userModule/${MutationTypes.UPDATE_USER}`, userInfo)
     })
+
+    onRenderTracked(() => console.log('render tracked'))
+
+    onRenderTriggered(() => console.log('render trigger'))
 
     return () => (
       <div class='app-wrapper'>

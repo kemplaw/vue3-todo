@@ -11,7 +11,7 @@ export function isExpiredTime(oldTime: number) {
 }
 
 export function getStore(key: string) {
-  const sessionString = sessionStorage.getItem(key)
+  const sessionString = localStorage.getItem(key)
 
   if (!sessionString) return null
 
